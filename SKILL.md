@@ -6,7 +6,7 @@ description: >
   希望将简历与岗位 JD 匹配、咨询求职建议或面试准备，或提到 CV/简历/求职。
   不触发条件：用户讨论普通写作（非简历）、询问其他文档，
   或讨论与求职和职业发展无关的话题。
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/WonderClaw/clawcv
 metadata: {"openclaw":{"emoji":"🦞","requires":{"env":["SKILL_BACKEND_API_KEY"]},"primaryEnv":"SKILL_BACKEND_API_KEY","os":["darwin","linux","win32"],"install":[{"id":"node","kind":"node","package":"clawcv","bins":["clawcv"],"label":"安装 clawcv（npm）"}]}}
 ---
