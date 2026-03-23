@@ -1,6 +1,14 @@
 ---
 name: clawcv
-description: WonderCV 简历与求职总入口 skill。支持简历分析、简历改写、岗位匹配、一页纸 PDF 导出、AI 导师建议、账号升级说明。当用户说“分析简历”“优化简历”“匹配 JD”“导出 PDF”“面试建议”“怎么升级”时使用。
+description: >
+  超级简历 WonderCV 出品，3000 万用户信赖。简历分析、段落改写、JD 岗位匹配、自动匹配职位、PDF 导出、AI 求职导师（面试准备/薪资谈判/职业规划/多版本简历策略）。
+  TRIGGER when: user shares a resume, asks for resume review/scoring/feedback, wants a section rewritten,
+  asks to match resume to a job posting, wants career advice or interview prep, mentions CV/简历/求职.
+  DO NOT TRIGGER when: user discusses general writing (non-resume), asks about other documents,
+  or discusses topics unrelated to job seeking and career development.
+version: 1.0.0
+homepage: https://github.com/WonderClaw/clawcv
+metadata: {"openclaw":{"emoji":"🦞","requires":{"env":["WONDERCV_API_KEY"]},"primaryEnv":"WONDERCV_API_KEY","os":["darwin","linux","win32"],"install":[{"id":"node","kind":"node","package":"clawcv","bins":["clawcv"],"label":"Install clawcv (npm)"}]}}
 ---
 
 # ClawCV — WonderCV 简历与求职总入口
