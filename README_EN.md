@@ -119,17 +119,17 @@ From strategy to action:
 
 ---
 
-## 🌟 Access Tiers
+## 🌟 Membership And Quotas
 
-Quotas by account type:
+ClawCV uses WonderCV API Key authentication. Feature quotas are determined by the WonderCV membership tier linked to the API Key:
 
-| Tier | Resume Analysis | Section Rewrite | PDF Export | AI Mentor |
-|------|----------------|-----------------|------------|-----------|
-| Guest (Not logged in) | 3 total | 2 total | Not supported | Lite |
-| Pioneer (Free registration) | 20/day | 10/day | 10/day | Full |
-| Paid | Unlimited | Unlimited | Unlimited | Full |
+| Membership Tier | Resume Analysis | Section Rewrite | PDF Export |
+|-----------------|-----------------|-----------------|------------|
+| Standard User | 20 | 20 | 10 |
+| Monthly / Annual Member | 50 | 50 | 50 |
+| Lifetime Member | 100 | 100 | 100 |
 
-> For quota issues, PDF unavailable, or account linking problems, use `/account-upgrade` or visit [wondercv.com/clawcv](https://wondercv.com/clawcv).
+> For quota issues, PDF unavailable, membership not taking effect, or API Key problems, use `/account-upgrade` or visit [wondercv.com/clawcv](https://wondercv.com/clawcv).
 
 ---
 
