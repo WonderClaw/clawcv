@@ -26,7 +26,8 @@ ClawCV 是 [超级简历 WonderCV](https://wondercv.com) 出品的 AI 求职 ski
 
 请前往 [https://www.wondercv.com/clawcv](https://www.wondercv.com/clawcv) 获取你的 ClawCV API Key。
 
-### 第一步：安装
+
+### 第二步：安装
 
 #### OpenClaw
 
@@ -40,8 +41,9 @@ npx clawcv --api-key YOUR_API_KEY
 claude mcp add clawcv -- npx clawcv --api-key YOUR_API_KEY
 ```
 
+### 第三步：添加到 AI 工具
 
-### 第二步：添加到 AI 工具
+如果你是手动配置 MCP，推荐直接使用 `npx` 方式，无需全局安装。
 
 **Claude Code**（`~/.claude/settings.json`）：
 
@@ -49,10 +51,11 @@ claude mcp add clawcv -- npx clawcv --api-key YOUR_API_KEY
 {
   "mcpServers": {
     "clawcv": {
-      "command": "clawcv",
+      "command": "npx",
+      "args": ["-y", "clawcv"],
       "env": {
         "SKILL_BACKEND_URL": "https://api.wondercv.com",
-        "SKILL_BACKEND_API_KEY": "你的API Key"
+        "SKILL_BACKEND_API_KEY": "你的 API Key"
       }
     }
   }
@@ -65,36 +68,20 @@ claude mcp add clawcv -- npx clawcv --api-key YOUR_API_KEY
 {
   "mcpServers": {
     "clawcv": {
-      "command": "clawcv",
-      "env": {
-        "SKILL_BACKEND_URL": "https://api.wondercv.com",
-        "SKILL_BACKEND_API_KEY": "你的API Key"
-      }
-    }
-  }
-}
-```
-
-如果使用 npx 方式（无需安装）：
-
-```json
-{
-  "mcpServers": {
-    "clawcv": {
       "command": "npx",
       "args": ["-y", "clawcv"],
       "env": {
         "SKILL_BACKEND_URL": "https://api.wondercv.com",
-        "SKILL_BACKEND_API_KEY": "你的API Key"
+        "SKILL_BACKEND_API_KEY": "你的 API Key"
       }
     }
   }
 }
 ```
 
-配置保存后重启 AI 工具，ClawCV 会自动出现在可用工具列表中。
+配置保存后，完全重启 AI 工具，ClawCV 会自动出现在可用工具列表中。
 
-### 第三步：开始使用
+### 第四步：开始使用
 
 直接在对话里说你的需求，AI 会自动调用 ClawCV：
 

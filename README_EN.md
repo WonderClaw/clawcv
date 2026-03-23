@@ -20,9 +20,13 @@ ClawCV 是 [超级简历 WonderCV](https://wondercv.com) 出品的 AI 求职 ski
 
 ---
 
-## 安装与配置
+## Installation and Setup
 
-### 第一步：安装
+### Step 1: Get an API key
+
+Get your `SKILL_BACKEND_API_KEY` from WonderCV. You will need it for the setup below.
+
+### Step 2: Install
 
 #### OpenClaw
 
@@ -36,42 +40,11 @@ npx clawcv --api-key YOUR_API_KEY
 claude mcp add clawcv -- npx clawcv --api-key YOUR_API_KEY
 ```
 
+### Step 3: Add ClawCV to your AI tool
 
-### 第二步：添加到 AI 工具
+If you are configuring MCP manually, use the `npx` setup below. It does not require a global install.
 
-**Claude Code**（`~/.claude/settings.json`）：
-
-```json
-{
-  "mcpServers": {
-    "clawcv": {
-      "command": "clawcv",
-      "env": {
-        "SKILL_BACKEND_URL": "https://api.wondercv.com",
-        "SKILL_BACKEND_API_KEY": "你的API Key"
-      }
-    }
-  }
-}
-```
-
-**Cursor**（Settings → MCP，或 `~/.cursor/mcp.json`）：
-
-```json
-{
-  "mcpServers": {
-    "clawcv": {
-      "command": "clawcv",
-      "env": {
-        "SKILL_BACKEND_URL": "https://api.wondercv.com",
-        "SKILL_BACKEND_API_KEY": "你的API Key"
-      }
-    }
-  }
-}
-```
-
-如果使用 npx 方式（无需安装）：
+**Claude Code** (`~/.claude/settings.json`):
 
 ```json
 {
@@ -81,25 +54,42 @@ claude mcp add clawcv -- npx clawcv --api-key YOUR_API_KEY
       "args": ["-y", "clawcv"],
       "env": {
         "SKILL_BACKEND_URL": "https://api.wondercv.com",
-        "SKILL_BACKEND_API_KEY": "你的API Key"
+        "SKILL_BACKEND_API_KEY": "Your API Key"
       }
     }
   }
 }
 ```
 
-配置保存后重启 AI 工具，ClawCV 会自动出现在可用工具列表中。
+**Cursor** (Settings → MCP, or `~/.cursor/mcp.json`):
 
-### 第三步：开始使用
+```json
+{
+  "mcpServers": {
+    "clawcv": {
+      "command": "npx",
+      "args": ["-y", "clawcv"],
+      "env": {
+        "SKILL_BACKEND_URL": "https://api.wondercv.com",
+        "SKILL_BACKEND_API_KEY": "Your API Key"
+      }
+    }
+  }
+}
+```
 
-直接在对话里说你的需求，AI 会自动调用 ClawCV：
+After saving the config, fully restart your AI tool. ClawCV will appear in the available tools list automatically.
+
+### Step 4: Start using it
+
+Just describe what you want in chat, and the AI will call ClawCV automatically:
 
 ```
-帮我分析这份简历
-把我的工作经历改得更像产品经理
-这份 JD 和我的简历匹不匹配？
-帮我整理成一页纸并导出 PDF
-给我一份面试准备建议
+Analyze this resume for me
+Rewrite my work experience for a product manager role
+How well does this job description match my resume?
+Turn this into a one-page PDF resume
+Give me interview prep suggestions
 ```
 
 ---
