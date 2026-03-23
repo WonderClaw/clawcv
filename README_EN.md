@@ -1,184 +1,189 @@
-# WonderClaw ClawCV — WonderCV Resume AI Skills 🦞✨
+# ClawCV — WonderCV 简历 AI Skill
 
-[简体中文](./README.md) | [English](./README_EN.md)
+> 把简历分析、改写、岗位匹配、PDF 导出和求职建议，直接带进你的 AI 对话里。
 
-> Bring resume analysis, rewriting, job matching, PDF export, and career advice directly into your AI conversations.
 
-[![Platform: OpenClaw](https://img.shields.io/badge/Platform-OpenClaw-orange.svg)](https://github.com/WonderClaw/clawcv)
-[![Platform: Claude_Code](https://img.shields.io/badge/Platform-Claude_Code-6b4fbb.svg)](https://anthropic.com/claude)
-[![Version: v1.0.0](https://img.shields.io/badge/Version-v1.0.0-green.svg)](https://github.com/WonderClaw/clawcv)
-[![License: MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg)](https://opensource.org/licenses/MIT)
-[![Language: Node.js_18+](https://img.shields.io/badge/Node.js-18%2B-blue.svg)](https://nodejs.org/)
-
-ClawCV is a collection of career AI skills from [WonderCV](https://wondercv.com), designed for AI environments that support local skills such as **Claude Code** and **Codex CLI**. Once installed, simply say "analyze my resume" in a conversation, and the AI will automatically invoke the corresponding workflow.
+ClawCV 是 [超级简历 WonderCV](https://wondercv.com) 出品的 AI 求职 skill。安装配置后，你可以直接在 AI 对话里说"帮我分析简历"，AI 会自动调用对应能力处理任务，无需手动操作任何工具。
 
 ---
 
-## 🚀 Skills Overview
+## 功能一览
 
-| Skill | Function | Trigger Phrase Example |
-|-------|----------|----------------------|
-| [resume-analysis](./resume-analysis/SKILL.md) | Diagnose overall resume quality, output scores, issues, and suggestions | "Analyze resume" / "Resume diagnosis" |
-| [resume-rewrite](./resume-rewrite/SKILL.md) | Rewrite summary, work/project experience, and skills | "Optimize resume" / "Rewrite work experience" |
-| [job-match](./job-match/SKILL.md) | Evaluate match against JD, identify gaps and missing keywords | "Job matching" / "Is this JD a good fit?" |
-| [pdf-export](./pdf-export/SKILL.md) | Organize into one-page format and export PDF | "Export PDF" / "Generate one-page resume" |
-| [ai-mentor](./ai-mentor/SKILL.md) | Interview prep, career planning, salary negotiation, multi-version strategies | "How to prepare for interview" / "Salary tips" |
-| [account-upgrade](./account-upgrade/SKILL.md) | Manage quotas, link accounts, upgrade permissions, PDF unavailable | "How to upgrade" / "Why can't I export PDF" |
+| 能力 | 说明 | 触发说法示例 |
+|------|------|------------|
+| **简历分析** | 5 维度评分（完整性/清晰度/匹配度/成果感/结构），输出问题优先级和改进建议 | "帮我看看这份简历" / "简历哪里有问题" |
+| **段落改写** | 改写个人总结、工作经历、项目经历、技能、教育经历，提供 1-3 个版本 | "优化我的工作经历" / "改写这段项目经历" |
+| **岗位匹配** | 对照 JD 输出匹配分、优势、差距、缺失关键词 | "看看我和这个岗位匹不匹配" |
+| **一页纸 PDF** | 整理并导出投递版 PDF，支持 4 种模板风格 | "导出 PDF" / "生成一页纸简历" |
+| **AI 导师** | 8 大模块：整体评价、修改建议、职位匹配、面试问题、求职规划、薪资谈判、多版本简历、人工导师 | "面试怎么准备" / "薪资怎么谈" |
+| **账号绑定** | 绑定 WonderCV 账号，升级会员解锁更多配额和完整功能 | "怎么升级" / "我要绑定账号" |
 
 ---
 
-## 📦 Quick Start
+## 安装与配置
 
-### Step 1: Get Your API Key
+### 第一步：安装
 
-Register at [wondercv.com/clawcv](https://wondercv.com/clawcv) and obtain your API Key.
-
-### Step 2: Install
+#### OpenClaw
 
 ```bash
-npm install -g clawcv
+npx clawcv --api-key YOUR_API_KEY
 ```
 
-> Requires Node.js 18+
-
-### Step 3: Configure API Key
-
-After installation, configure the API Key in your AI tool:
-
-**Claude Code:**
+#### Claude Code
 
 ```bash
-claude config set WONDERCV_API_KEY your_api_key_here
+claude mcp add clawcv -- npx clawcv --api-key YOUR_API_KEY
 ```
 
-**Codex CLI:**
 
-```bash
-export WONDERCV_API_KEY=your_api_key_here
+### 第二步：添加到 AI 工具
+
+**Claude Code**（`~/.claude/settings.json`）：
+
+```json
+{
+  "mcpServers": {
+    "clawcv": {
+      "command": "clawcv",
+      "env": {
+        "SKILL_BACKEND_URL": "https://api.wondercv.com",
+        "SKILL_BACKEND_API_KEY": "你的API Key"
+      }
+    }
+  }
+}
 ```
 
-Or write directly to `.env`:
+**Cursor**（Settings → MCP，或 `~/.cursor/mcp.json`）：
+
+```json
+{
+  "mcpServers": {
+    "clawcv": {
+      "command": "clawcv",
+      "env": {
+        "SKILL_BACKEND_URL": "https://api.wondercv.com",
+        "SKILL_BACKEND_API_KEY": "你的API Key"
+      }
+    }
+  }
+}
+```
+
+如果使用 npx 方式（无需安装）：
+
+```json
+{
+  "mcpServers": {
+    "clawcv": {
+      "command": "npx",
+      "args": ["-y", "clawcv"],
+      "env": {
+        "SKILL_BACKEND_URL": "https://api.wondercv.com",
+        "SKILL_BACKEND_API_KEY": "你的API Key"
+      }
+    }
+  }
+}
+```
+
+配置保存后重启 AI 工具，ClawCV 会自动出现在可用工具列表中。
+
+### 第三步：开始使用
+
+直接在对话里说你的需求，AI 会自动调用 ClawCV：
 
 ```
-WONDERCV_API_KEY=your_api_key_here
-```
-
-### Step 4: Start Using
-
-Once configured, just say in your conversation:
-
-```
-Analyze this resume
-Rewrite my work experience to sound more like a Product Manager
-Check if this JD matches my resume
-Help me organize and export a one-page PDF
-Give me some interview prep advice
-Why can't I export PDF right now
+帮我分析这份简历
+把我的工作经历改得更像产品经理
+这份 JD 和我的简历匹不匹配？
+帮我整理成一页纸并导出 PDF
+给我一份面试准备建议
 ```
 
 ---
 
-## 🤖 Typical Workflows
+## 权限说明
 
-### Resume Optimization
+| 用户类型 | 简历分析 | 段落改写 | 岗位匹配 | PDF 导出 | AI 导师 |
+|----------|----------|----------|----------|----------|---------|
+| 普通用户 | 20 次/天 | 20 次/天 | 20 次/天 | 10 次/天 | 简化版 |
+| 会员用户 | 50 次/天 | 50 次/天 | 50 次/天 | 50 次/天 | 完整版（8 模块）|
+| 终身会员 | 100 次/天 | 100 次/天 | 100 次/天 | 100 次/天 | 完整版（8 模块）|
 
-From diagnosis to export-ready version:
+配额每天 UTC 00:00 重置。在对话中说"我要绑定账号"即可触发绑定流程。
 
-```
-1. /resume-analysis  → Identify issues, scores, and improvement priorities
-2. /resume-rewrite   → Optimize work/project sections module by module
-3. /pdf-export       → Organize into one-page layout, export final PDF
-```
+---
 
-### JD-Targeted Tailoring
+## 典型工作流
 
-Customize your resume for a specific role:
-
-```
-1. /job-match        → Find matches, gaps, and missing keywords
-2. /resume-rewrite   → Tailor relevant modules for the JD
-3. /pdf-export       → Export a version customized for that role
-```
-
-### Career Coaching
-
-From strategy to action:
+### 简历优化
 
 ```
-1. /resume-analysis  → Assess current resume state
-2. /ai-mentor        → Get interview, planning, salary, or multi-version advice
-3. /resume-rewrite   → Apply suggestions to resume text
+1. 分析简历        → 看整体评分和高优先级问题
+2. 改写关键段落    → 按模块逐段优化
+3. 导出 PDF        → 整理成一页纸投递版
 ```
 
-### Access Issues
+### JD 对照改写
 
 ```
-1. /account-upgrade  → Check current limits, link account, or upgrade
-2. /pdf-export       → Continue exporting after upgrade
+1. 岗位匹配分析    → 找出差距和缺失关键词
+2. 改写相关段落    → 针对性补入关键词和成果
+3. 导出 PDF        → 导出这个岗位的专用版本
+```
+
+### 求职辅导
+
+```
+1. 简历分析        → 判断当前简历状态
+2. AI 导师建议     → 面试准备 / 薪资谈判 / 职业规划
+3. 改写落地        → 把建议落实到简历文本
 ```
 
 ---
 
-## 🌟 Membership And Quotas
+## FAQ
 
-ClawCV uses WonderCV API Key authentication. Feature quotas are determined by the WonderCV membership tier linked to the API Key:
+**Q：安装后 AI 没有自动调用 ClawCV，怎么办？**
 
-| Membership Tier | Resume Analysis | Section Rewrite | PDF Export |
-|-----------------|-----------------|-----------------|------------|
-| Standard User | 20 | 20 | 10 |
-| Monthly / Annual Member | 50 | 50 | 50 |
-| Lifetime Member | 100 | 100 | 100 |
+检查配置文件格式是否正确，然后完全重启 AI 工具（不是刷新，是退出重开）。也可以在对话中直接说"用 ClawCV 帮我分析简历"明确触发。
 
-> For quota issues, PDF unavailable, membership not taking effect, or API Key problems, use `/account-upgrade` or visit [wondercv.com/clawcv](https://wondercv.com/clawcv).
+**Q：为什么 PDF 导出次数较少？**
 
----
+普通用户每天可导出 10 次 PDF，会员用户和终身会员每天可导出 50-100 次。在对话中说"我要升级"了解升级方式。
 
-## 🦞 Environment Requirements
+**Q：session_id 是什么，需要我管理吗？**
 
-| Environment | Support |
-|-------------|---------|
-| Claude Code | ✅ Full support |
-| OpenAI Codex CLI | ✅ Full support |
-| Other AI tools with local skill support | ✅ Theoretically compatible |
-| ChatGPT Web | ❌ No local skill support |
+不需要。AI 会自动维护 session_id，你只需要正常对话。session_id 用于跟踪配额和会话历史，24 小时后自动过期。
 
-**Dependencies:**
+**Q：配额用完了怎么办？**
 
-- Node.js 18+ (for `npx clawcv` installation)
-- Valid WonderCV API Key
+在对话中说"我要绑定账号"或"我想升级"，完成 WonderCV 账号绑定即可提升配额。各级别配额请参考上文[权限说明](#权限说明)。
 
----
+**Q：改写结果只有 1 个版本，正常吗？**
 
-## ❓ FAQ
+普通用户每次只返回 1 个版本，会员用户和终身会员最多返回 3 个版本。
 
-**Q: Can't find skills after installation?**
+**Q：简历内容会被存储吗？**
 
-Check if `~/.codex/skills/` contains the corresponding skill folders. If using Claude Code, restart the tool to auto-reload.
+会话数据（包括配额使用情况）会持久化到 WonderCV 后端以支持跨设备使用。简历文本在处理后不会被长期存储。
 
-**Q: API Key invalid?**
+**Q：支持英文简历吗？**
 
-Visit [wondercv.com/clawcv](https://wondercv.com/clawcv) to confirm if the Key has expired or been reset.
+支持。ClawCV 默认以用户输入语言回复，英文简历直接粘贴即可。
 
-**Q: Why isn't the skill auto-invoked? Do I have to type /xxx manually?**
+**Q：`SKILL_BACKEND_URL` 这个环境变量需要设置吗？**
 
-Different AI tools have different trigger mechanisms. Describing your needs in natural language (e.g., "analyze my resume") usually auto-routes; or explicitly type `/resume-analysis` to trigger manually.
-
-**Q: Can I install multiple skills at once?**
-
-Yes. `npx clawcv` installs all skills. Sub-commands install only the specified one. Multiple skills do not conflict.
-
-**Q: Will my resume content be stored?**
-
-ClawCV processes resume content within the conversation and does not actively persist it. See [WonderCV Privacy Policy](https://wondercv.com) for details.
+不需要。默认连接 `https://api.wondercv.com`，开箱即用。仅在私有化部署或调试时才需要修改。
 
 ---
 
-## 🔗 Links
+## 相关链接
 
-- [WonderCV Website](https://wondercv.com) — Online resume builder
-- [Get API Key](https://wondercv.com/clawcv) — Register and obtain your Key
-- [Main Skill Entry](./SKILL.md)
-
+- [WonderCV 官网](https://wondercv.com) — 在线简历制作工具
+- [获取账号 / 升级会员](https://wondercv.com/clawcv)
 ---
 
 ## License

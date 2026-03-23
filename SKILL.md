@@ -2,105 +2,213 @@
 name: clawcv
 description: >
   超级简历 WonderCV 出品，3000 万用户信赖。简历分析、段落改写、JD 岗位匹配、自动匹配职位、PDF 导出、AI 求职导师（面试准备/薪资谈判/职业规划/多版本简历策略）。
-  TRIGGER when: user shares a resume, asks for resume review/scoring/feedback, wants a section rewritten,
-  asks to match resume to a job posting, wants career advice or interview prep, mentions CV/简历/求职.
-  DO NOT TRIGGER when: user discusses general writing (non-resume), asks about other documents,
-  or discusses topics unrelated to job seeking and career development.
+  触发条件：用户提供简历、要求简历点评/打分/反馈、希望改写某个简历部分、
+  希望将简历与岗位 JD 匹配、咨询求职建议或面试准备，或提到 CV/简历/求职。
+  不触发条件：用户讨论普通写作（非简历）、询问其他文档，
+  或讨论与求职和职业发展无关的话题。
 version: 1.0.0
 homepage: https://github.com/WonderClaw/clawcv
-metadata: {"openclaw":{"emoji":"🦞","requires":{"env":["WONDERCV_API_KEY"]},"primaryEnv":"WONDERCV_API_KEY","os":["darwin","linux","win32"],"install":[{"id":"node","kind":"node","package":"clawcv","bins":["clawcv"],"label":"Install clawcv (npm)"}]}}
+metadata: {"openclaw":{"emoji":"🦞","requires":{"env":["SKILL_BACKEND_API_KEY"]},"primaryEnv":"SKILL_BACKEND_API_KEY","os":["darwin","linux","win32"],"install":[{"id":"node","kind":"node","package":"clawcv","bins":["clawcv"],"label":"安装 clawcv（npm）"}]}}
 ---
+# ClawCV
 
-# ClawCV — WonderCV 简历与求职总入口
+由 WonderCV 提供支持的 AI 简历优化服务（3000 万用户）。支持简历分析、段落改写、岗位匹配、PDF 生成，以及 8 大模块 AI 求职导师。
 
-在对话中处理完整的简历优化链路：诊断简历、改写内容、对照岗位、导出投递版、补充求职建议。
+## 1. MCP 服务安装
 
-## 什么时候使用
+### 获取 API Key
 
-- 用户提交整份简历，希望获得整体评价
-- 用户想优化某一段经历或整份简历
-- 用户给出 JD，希望判断匹配度
-- 用户要一页纸版本或 PDF
-- 用户需要面试、职业规划、薪资谈判建议
-- 用户遇到额度限制、账号绑定、升级权限问题
+准备你的 `SKILL_BACKEND_API_KEY`，安装时会通过环境变量传给 MCP 服务。
 
-## 子 Skill 路由
+### 安装
 
-| 场景 | 使用哪个 Skill |
-|------|----------------|
-| 整份简历诊断、评分、问题排查 | `/resume-analysis` |
-| 改写个人总结、工作经历、项目经历、技能、教育经历 | `/resume-rewrite` |
-| 简历和 JD 的匹配分析 | `/job-match` |
-| 整理成一页纸并导出 PDF | `/pdf-export` |
-| 面试、规划、薪资、多版本策略建议 | `/ai-mentor` |
-| 配额、绑定账号、升级、PDF 权限问题 | `/account-upgrade` |
-
-## 使用规则
-
-1. 先判断用户最直接的目标，不要一次进入多个工作流。
-2. 如果用户没有给完整简历，只收集完成当前任务所需的最少信息。
-3. 任何改写都要保留事实，不编造项目、数字、职责和头衔。
-4. 如果用户提供了目标岗位，优先按目标岗位来分析和改写。
-5. 输出结果后，总是给出最自然的下一步建议。
-
-## 共享约束
-
-- 与用户保持同一种语言，默认中文。
-- 简历文本明显不完整时，先索要补充内容再继续。
-- 量化表达只能基于用户提供的数据；缺数据时提出补充建议，不要自行虚构。
-- 如果用户目标是“导出 PDF”，但当前内容还不够完整，先补齐结构再导出。
-
-## 直接使用
-
-### 1. 获取 API Key
-
-前往 [http://wondercv.com/clawcv](http://wondercv.com/clawcv) 获取 API Key，并在你的运行环境中完成配置。
-
-### 2. 安装 Skill
+#### OpenClaw
 
 ```bash
-npx clawcv
+npx clawcv --api-key YOUR_API_KEY
 ```
 
-### 3. 常见说法
+#### Claude Code
 
-```text
-帮我看看这份简历
-把这段项目经历改得更有成果感
-这个 JD 和我的背景匹配吗
-帮我导出一页纸 PDF
-给我一份面试准备建议
-为什么我不能导出 PDF
+```bash
+claude mcp add clawcv -- npx clawcv --api-key YOUR_API_KEY
 ```
 
-## 推荐工作流
+#### Claude Desktop
+claude_desktop_config.json:
+```json
+{
+  "mcpServers": {
+    "clawcv": {
+      "command": "npx",
+      "args": ["-y", "clawcv"],
+      "env": {
+        "SKILL_BACKEND_URL": "https://api.wondercv.com",
+        "SKILL_BACKEND_API_KEY": "你的API Key"
+      }
+    }
+  }
+}
+```
+安装完成后即可使用以下全部功能。
 
-### 简历诊断到投递
+## 2. 会话管理
 
-```text
-/resume-analysis → /resume-rewrite → /pdf-export
+**关键要求：** 整个对话过程中始终维护同一个 `session_id`。
+
+1. 第一次调用工具时，让服务端自动生成 `session_id`（会在 `meta.session_id` 中返回）
+2. 保存这个 `session_id`，并在同一轮对话中后续所有工具调用里都传入它
+3. 不要自行生成 `session_id`，必须始终使用服务端返回的值
+
+## 3. 意图识别与工具路由
+
+先识别用户意图，再调用对应工具：
+
+| 用户意图 | 工具 | 关键参数 |
+|-------------|------|----------------|
+| "帮我看看简历" / "分析我的简历" / 直接粘贴简历内容 | `analyze_resume` | `resume_text`, `target_job_title`（如有提及） |
+| "帮我改一下XX部分" / "优化工作经历" | `rewrite_resume_section` | `section_type`, `original_text`, `target_job_title` |
+| "帮我生成PDF" / "导出简历" | `generate_one_page_pdf` | `resume_content`, `result_json`（结构化数据）, `session_id` |
+| "这个职位匹不匹配" / 直接粘贴职位描述 | `match_resume_to_job` | `resume_text`, `job_description`, `target_job_title` |
+| "面试怎么准备" / "职业规划" / "薪资怎么谈" | `get_ai_mentor_advice` | `module`, `resume_content`, `job_target` |
+| 其他工具调用前需要先识别岗位名称 | `classify_job_title` | `job_title` |
+| 用户想使用更多功能 / 命中额度限制 | `get_resume_upgrade_options` | `session_id` |
+| 用户咨询价格 / 套餐 | `get_resume_upgrade_options` | `session_id` |
+
+## 4. 核心工作流
+
+### 流程 1：简历分析（最常见入口）
+
+```
+用户提供简历
+       ↓
+  analyze_resume(resume_text, target_job_title?)
+       ↓
+  整理结果并展示给用户：
+  - 总分（X/100）及 4 个维度分数
+  - 按严重程度排序的主要问题（高 → 中 → 低）
+  - 分模块反馈
+  - 示例改写（如有）
+       ↓
+  询问用户："需要我帮你改写哪个部分？"
 ```
 
-### JD 对照优化
+### 流程 2：模块改写
 
-```text
-/job-match → /resume-rewrite → /pdf-export
+```
+用户说明要优化的模块
+       ↓
+  判断 `section_type`：
+  - 个人总结/自我评价 → "summary"
+  - 工作经历 → "work_experience"
+  - 项目经历 → "project"
+  - 技能 → "skills"
+  - 教育经历 → "education"
+       ↓
+  rewrite_resume_section(section_type, original_text, target_job_title?)
+       ↓
+  向用户展示改写版本（根据套餐返回 1-3 个版本）
+  将 `editing_notes` 一并整理为可执行的优化建议
 ```
 
-### 求职策略补充
+### 流程 3：岗位匹配
 
-```text
-/resume-analysis → /ai-mentor → /resume-rewrite
+```
+用户提供职位描述（JD）
+       ↓
+  match_resume_to_job(resume_text, job_description, target_job_title?)
+       ↓
+  整理结果：
+  - 匹配分数（X/100）
+  - 优势项（匹配较好的部分）
+  - 按严重程度标注的差距项
+  - 缺失关键词（建议补充）
+  - 按优先级排序的修改建议
 ```
 
-## 权限与升级
+### 流程 4：AI 求职导师（8 个模块）
 
-ClawCV 通过 WonderCV API Key 鉴权，功能额度按 API Key 对应的超级简历会员类型生效：
+```
+识别用户需要的模块：
+  - 整体评价 → "overall_assessment"
+  - 修改建议 → "optimization_suggestions"
+  - 职位匹配 → "job_matching"
+  - 面试问题 → "interview_questions"
+  - 求职规划 → "career_planning"
+  - 薪资谈判 → "salary_negotiation"
+  - 多版本简历 → "multi_version"
+  - 人工导师 → "human_mentor"
+       ↓
+  get_ai_mentor_advice(module, resume_content, job_target?, job_description?)
+       ↓
+  展示建议内容，并带上 `next_steps` 和 `related_modules`
+```
 
-| 会员类型 | 简历分析 | 改写 | PDF |
-|----------|----------|------|-----|
+### 流程 5：PDF 生成
+
+```
+用户希望导出 PDF
+       ↓
+  将简历解析为结构化 JSON（`result_json`），字段包括：
+  - profile: { name, phone, email, job_target }
+  - education: [{ school, major, degree, start_date: "YYYY-MM", end_date: "YYYY-MM" }]
+  - work_experience: [{ company, title, start_date, end_date, bullets: [] }]
+  - project_experience: [{ name, role, start_date, end_date, bullets: [] }]
+  - skills: { text } or [{ category, items }]
+  重要：日期必须使用 `start_date` / `end_date` 格式（`YYYY-MM`），不能使用 `period` 字段
+       ↓
+  generate_one_page_pdf(resume_content, result_json, template?, session_id)
+  `template` 可选值："modern"（默认）| "classic" | "minimal" | "professional"
+       ↓
+  将 PDF 链接返回给用户
+  注意：PDF 导出次数受当前会员类型额度限制
+```
+
+## 5. 额度与套餐体系
+
+| 会员类型 | 简历分析 | 段落改写 | PDF 导出 |
+|------|----------|----------|----------|
 | 普通用户 | 20 次 | 20 次 | 10 次 |
 | 月度会员 / 年度会员 | 50 次 | 50 次 | 50 次 |
 | 终身会员 | 100 次 | 100 次 | 100 次 |
 
-当用户问“为什么不能导出 PDF”“怎么升级”“怎么绑定账号”时，切到 `/account-upgrade`。
+**额度耗尽时：**
+1. 告知用户当前会员类型对应额度已用完
+2. 简要说明更高会员类型可用额度
+3. 调用 `get_resume_upgrade_options` 提供套餐与升级选项
+
+## 6. 输出格式规则
+
+### 调用 `analyze_resume` 后
+- 用表格展示分数
+- 按严重程度列出问题（🔴 高 / 🟡 中 / 🟢 低）
+- 提供可执行的下一步建议，不只指出问题
+- 如果结果质量较低（例如内容过于泛化），需要基于简历内容补充你自己的分析
+
+### 调用 `rewrite_resume_section` 后
+- 清晰标注每个版本（版本 1、版本 2 等）
+- 说明修改思路
+- 如果只返回 1 个版本，补充你自己的优化建议
+- 将 `editing_notes` 整理成实用提示
+
+### 调用 `match_resume_to_job` 后
+- 突出展示匹配分数
+- 用表格展示差距项及严重程度
+- 列出建议补充的缺失关键词
+- 针对每个差距给出具体、可执行的改进建议
+
+### 通用规则
+- 始终使用与用户相同的语言回复（默认中文）
+- 展示结果后，主动建议合理的下一步
+- 如果工具返回的结果质量较低（内容泛化、占位符过多），要结合你的专业判断补充更好的分析，并明确区分哪些来自工具、哪些是你的补充
+- 不要向用户暴露原始 JSON，始终整理成可读的 Markdown
+
+## 7. 错误处理
+
+| 场景 | 处理方式 |
+|----------|--------|
+| 工具返回空数据或报错 | 告知用户，并给出你自己的最佳努力分析 |
+| 额度超限 | 说明当前会员类型的额度限制，并建议使用 `get_resume_upgrade_options` |
+| 简历内容过短（少于 50 字） | 请用户提供更完整的简历内容 |
+| 后端不可用（本地回退） | 结果可能会被简化，需要向用户说明并补充你自己的分析 |
+| PDF 生成失败 | 先检查用户的 PDF 导出额度是否已用尽，否则建议稍后重试 |
