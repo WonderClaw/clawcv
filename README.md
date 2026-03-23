@@ -1,5 +1,7 @@
 # 超级龙虾 ClawCV — WonderCV 简历 AI Skills 🦞✨
 
+[简体中文](./README.md) | [English](./README_EN.md)
+
 > 把简历分析、改写、岗位匹配、PDF 导出和求职建议，直接带进你的 AI 对话里。
 
 [![Platform: OpenClaw](https://img.shields.io/badge/Platform-OpenClaw-orange.svg)](https://github.com/WonderClaw/clawcv)
