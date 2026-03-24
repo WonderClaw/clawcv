@@ -176,6 +176,10 @@ Quotas reset every day at 00:00 UTC. Say "link my account" in chat to start the 
 
 ## ❓ FAQ
 
+**Q: Do I need to set `SKILL_BACKEND_API_KEY`?**
+
+Yes. Please go to [https://www.wondercv.com/clawcv](https://www.wondercv.com/clawcv) to obtain your ClawCV API Key.
+
 **Q: ClawCV is installed, but the AI does not call it automatically. What should I check?**
 
 Verify that the MCP config is valid, then fully restart the AI tool. You can also say "use ClawCV to analyze my resume" to trigger it explicitly.
@@ -188,9 +192,6 @@ Standard users get 10 PDF exports per day. Members and lifetime members get 50-1
 
 No. The AI maintains `session_id` automatically. It is used to track quotas and conversation history, and it expires after 24 hours.
 
-**Q: What happens when my quota is used up?**
-
-Say "link my account" or "I want to upgrade" in chat to bind your WonderCV account and unlock higher limits. See the Access And Quotas section above.
 
 **Q: Why do I only get one rewrite version back?**
 

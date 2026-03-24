@@ -6,9 +6,9 @@ description: >
   希望将简历与岗位 JD 匹配、咨询求职建议或面试准备，或提到 CV/简历/求职。
   不触发条件：用户讨论普通写作（非简历）、询问其他文档，
   或讨论与求职和职业发展无关的话题。
-version: 1.0.1
-homepage: https://github.com/WonderClaw/clawcv
-metadata: {"openclaw":{"emoji":"🦞","requires":{"env":["SKILL_BACKEND_API_KEY"]},"primaryEnv":"SKILL_BACKEND_API_KEY","os":["darwin","linux","win32"],"install":[{"id":"node","kind":"node","package":"clawcv","bins":["clawcv"],"label":"安装 clawcv（npm）"}]}}
+version: 1.0.2
+homepage: https://www.wondercv.com/clawcv
+metadata: {"openclaw":{"emoji":"🦞","requires":{"env":["SKILL_BACKEND_API_KEY"]},"primaryEnv":"SKILL_BACKEND_API_KEY","install":[{"id":"node","kind":"node","package":"clawcv","bins":["clawcv"],"label":"安装 clawcv（npm，需 API Key）"}]}}
 ---
 # ClawCV
 
@@ -18,9 +18,12 @@ metadata: {"openclaw":{"emoji":"🦞","requires":{"env":["SKILL_BACKEND_API_KEY"
 
 ### 获取 API Key
 
+请前往 [https://www.wondercv.com/clawcv](https://www.wondercv.com/clawcv) 获取你的 ClawCV API Key。
+
 准备你的 `SKILL_BACKEND_API_KEY`，安装时会通过环境变量传给 MCP 服务。
 
 ### 安装
+
 
 #### OpenClaw
 
@@ -58,7 +61,6 @@ claude_desktop_config.json:
 
 1. 第一次调用工具时，让服务端自动生成 `session_id`（会在 `meta.session_id` 中返回）
 2. 保存这个 `session_id`，并在同一轮对话中后续所有工具调用里都传入它
-3. 不要自行生成 `session_id`，必须始终使用服务端返回的值
 
 ## 3. 意图识别与工具路由
 
@@ -72,8 +74,6 @@ claude_desktop_config.json:
 | "这个职位匹不匹配" / 直接粘贴职位描述 | `match_resume_to_job` | `resume_text`, `job_description`, `target_job_title` |
 | "面试怎么准备" / "职业规划" / "薪资怎么谈" | `get_ai_mentor_advice` | `module`, `resume_content`, `job_target` |
 | 其他工具调用前需要先识别岗位名称 | `classify_job_title` | `job_title` |
-| 用户想使用更多功能 / 命中额度限制 | `get_resume_upgrade_options` | `session_id` |
-| 用户咨询价格 / 套餐 | `get_resume_upgrade_options` | `session_id` |
 
 ## 4. 核心工作流
 
@@ -149,13 +149,23 @@ claude_desktop_config.json:
 ```
 用户希望导出 PDF
        ↓
-  将简历解析为结构化 JSON（`result_json`），字段包括：
-  - profile: { name, phone, email, job_target }
-  - education: [{ school, major, degree, start_date: "YYYY-MM", end_date: "YYYY-MM" }]
-  - work_experience: [{ company, title, start_date, end_date, bullets: [] }]
-  - project_experience: [{ name, role, start_date, end_date, bullets: [] }]
-  - skills: { text } or [{ category, items }]
-  重要：日期必须使用 `start_date` / `end_date` 格式（`YYYY-MM`），不能使用 `period` 字段
+  将 `resume_content` 解析为后端原生结构化简历 JSON（`result_json`）
+  `result_json` 顶层字段只能使用：
+  - profile
+  - my_infos
+  - edus
+  - works
+  - pro_infos
+  - orgs
+  - honor_infos
+  - skill
+  - language
+  - certificate
+  重要：
+  - `result_json` 不能为空
+  - 必须直接使用后端要求的原生字段
+  - 不要传 `basic_info`、`summary`、`education`、`work_experience`、`projects`、`skills` 等中间格式
+  - AI Agent 应先读取 `resume_content`，再按后端原生字段生成 `result_json`
        ↓
   generate_one_page_pdf(resume_content, result_json, template?, session_id)
   `template` 可选值："modern"（默认）| "classic" | "minimal" | "professional"
@@ -166,16 +176,17 @@ claude_desktop_config.json:
 
 ## 5. 额度与套餐体系
 
-| 会员类型 | 简历分析 | 段落改写 | PDF 导出 |
-|------|----------|----------|----------|
-| 普通用户 | 20 次 | 20 次 | 10 次 |
-| 月度会员 / 年度会员 | 50 次 | 50 次 | 50 次 |
-| 终身会员 | 100 次 | 100 次 | 100 次 |
+| 用户类型 | 简历分析 | 段落改写 | 岗位匹配 | PDF 导出 | AI 导师 |
+|----------|----------|----------|----------|----------|---------|
+| 普通用户 | 20 次/天 | 20 次/天 | 20 次/天 | 10 次/天 | 简化版 |
+| 会员用户 | 50 次/天 | 50 次/天 | 50 次/天 | 50 次/天 | 完整版（8 模块）|
+| 终身会员 | 100 次/天 | 100 次/天 | 100 次/天 | 100 次/天 | 完整版（8 模块）|
+
+配额每天 UTC 00:00 重置。在对话中说"我要绑定账号"即可触发绑定流程。
 
 **额度耗尽时：**
 1. 告知用户当前会员类型对应额度已用完
 2. 简要说明更高会员类型可用额度
-3. 调用 `get_resume_upgrade_options` 提供套餐与升级选项
 
 ## 6. 输出格式规则
 
@@ -208,7 +219,7 @@ claude_desktop_config.json:
 | 场景 | 处理方式 |
 |----------|--------|
 | 工具返回空数据或报错 | 告知用户，并给出你自己的最佳努力分析 |
-| 额度超限 | 说明当前会员类型的额度限制，并建议使用 `get_resume_upgrade_options` |
+| 额度超限 | 说明当前会员类型的额度限制|
 | 简历内容过短（少于 50 字） | 请用户提供更完整的简历内容 |
 | 后端不可用（本地回退） | 结果可能会被简化，需要向用户说明并补充你自己的分析 |
 | PDF 生成失败 | 先检查用户的 PDF 导出额度是否已用尽，否则建议稍后重试 |

@@ -175,6 +175,9 @@ claude mcp add clawcv -- npx clawcv --api-key YOUR_API_KEY
 ---
 
 ## ❓ FAQ
+**Q：`SKILL_BACKEND_API_KEY` 这个环境变量需要设置吗？**
+
+需要。请前往 [https://www.wondercv.com/clawcv](https://www.wondercv.com/clawcv) 获取你的 ClawCV API Key。
 
 **Q：安装后 AI 没有自动调用 ClawCV，怎么办？**
 
@@ -187,10 +190,6 @@ claude mcp add clawcv -- npx clawcv --api-key YOUR_API_KEY
 **Q：session_id 是什么，需要我管理吗？**
 
 不需要。AI 会自动维护 `session_id`，你只需要正常对话。`session_id` 用于跟踪配额和会话历史，24 小时后自动过期。
-
-**Q：配额用完了怎么办？**
-
-在对话中说“我要绑定账号”或“我想升级”，完成 WonderCV 账号绑定即可提升配额。各级别配额请参考上文“权限说明”。
 
 **Q：改写结果只有 1 个版本，正常吗？**
 
