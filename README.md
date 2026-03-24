@@ -22,6 +22,10 @@ ClawCV 是 [超级简历 WonderCV](https://wondercv.com) 出品的 AI 求职 ski
 
 ## 安装与配置
 
+### 获取 API Key
+
+请前往 [https://www.wondercv.com/clawcv](https://www.wondercv.com/clawcv) 获取你的 ClawCV API Key。
+
 ### 第一步：安装
 
 #### OpenClaw
