@@ -29,12 +29,12 @@ ClawCV 是 [超级简历 WonderCV](https://wondercv.com) 出品的 AI 求职 ski
 
 | Skill | 功能 | 入口 |
 |-------|------|------|
-| `resume-analysis` | 整体诊断简历质量，输出评分、问题和改进建议 | [resume-analysis/SKILL.md](./resume-analysis/SKILL.md) |
-| `resume-rewrite` | 改写个人总结、工作经历、项目经历、技能和教育经历 | [resume-rewrite/SKILL.md](./resume-rewrite/SKILL.md) |
-| `job-match` | 对照 JD 分析匹配度，找出差距和缺失关键词 | [job-match/SKILL.md](./job-match/SKILL.md) |
-| `pdf-export` | 整理成一页纸内容并导出 PDF | [pdf-export/SKILL.md](./pdf-export/SKILL.md) |
-| `ai-mentor` | 面试准备、职业规划、薪资谈判、多版本策略 | [ai-mentor/SKILL.md](./ai-mentor/SKILL.md) |
-| `account-upgrade` | 处理配额、绑定账号、升级权限和 PDF 不可用等问题 | [account-upgrade/SKILL.md](./account-upgrade/SKILL.md) |
+| `resume-analysis` | 整体诊断简历质量，输出评分、问题和改进建议 | [resume-analysis/SKILL.md](https://github.com/WonderClaw/clawcv/blob/main/resume-analysis/SKILL.md) |
+| `resume-rewrite` | 改写个人总结、工作经历、项目经历、技能和教育经历 | [resume-rewrite/SKILL.md](https://github.com/WonderClaw/clawcv/blob/main/resume-rewrite/SKILL.md) |
+| `job-match` | 对照 JD 分析匹配度，找出差距和缺失关键词 | [job-match/SKILL.md](https://github.com/WonderClaw/clawcv/blob/main/job-match/SKILL.md) |
+| `pdf-export` | 整理成一页纸内容并导出 PDF | [pdf-export/SKILL.md](https://github.com/WonderClaw/clawcv/blob/main/pdf-export/SKILL.md) |
+| `ai-mentor` | 面试准备、职业规划、薪资谈判、多版本策略 | [ai-mentor/SKILL.md](https://github.com/WonderClaw/clawcv/blob/main/ai-mentor/SKILL.md) |
+| `account-upgrade` | 处理配额、绑定账号、升级权限和 PDF 不可用等问题 | [account-upgrade/SKILL.md](https://github.com/WonderClaw/clawcv/blob/main/account-upgrade/SKILL.md) |
 
 ---
 
