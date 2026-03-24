@@ -29,12 +29,12 @@ ClawCV is WonderCV's AI career assistant skill for AI environments such as OpenC
 
 | Skill | Purpose | Entry |
 |-------|---------|-------|
-| `resume-analysis` | Diagnose overall resume quality and output scores, issues, and suggestions | [resume-analysis/SKILL.md](./resume-analysis/SKILL.md) |
-| `resume-rewrite` | Rewrite summary, work experience, project experience, skills, and education | [resume-rewrite/SKILL.md](./resume-rewrite/SKILL.md) |
-| `job-match` | Compare a resume against a JD and identify gaps and missing keywords | [job-match/SKILL.md](./job-match/SKILL.md) |
-| `pdf-export` | Turn resume content into a one-page PDF | [pdf-export/SKILL.md](./pdf-export/SKILL.md) |
-| `ai-mentor` | Provide interview prep, career planning, salary negotiation, and multi-version advice | [ai-mentor/SKILL.md](./ai-mentor/SKILL.md) |
-| `account-upgrade` | Handle quota limits, account linking, upgrade flows, and PDF access issues | [account-upgrade/SKILL.md](./account-upgrade/SKILL.md) |
+| `resume-analysis` | Diagnose overall resume quality and output scores, issues, and suggestions | [resume-analysis/SKILL.md](https://github.com/WonderClaw/clawcv/blob/main/resume-analysis/SKILL.md) |
+| `resume-rewrite` | Rewrite summary, work experience, project experience, skills, and education | [resume-rewrite/SKILL.md](https://github.com/WonderClaw/clawcv/blob/main/resume-rewrite/SKILL.md) |
+| `job-match` | Compare a resume against a JD and identify gaps and missing keywords | [job-match/SKILL.md](https://github.com/WonderClaw/clawcv/blob/main/job-match/SKILL.md) |
+| `pdf-export` | Turn resume content into a one-page PDF | [pdf-export/SKILL.md](https://github.com/WonderClaw/clawcv/blob/main/pdf-export/SKILL.md) |
+| `ai-mentor` | Provide interview prep, career planning, salary negotiation, and multi-version advice | [ai-mentor/SKILL.md](https://github.com/WonderClaw/clawcv/blob/main/ai-mentor/SKILL.md) |
+| `account-upgrade` | Handle quota limits, account linking, upgrade flows, and PDF access issues | [account-upgrade/SKILL.md](https://github.com/WonderClaw/clawcv/blob/main/account-upgrade/SKILL.md) |
 
 ---
 
@@ -42,9 +42,10 @@ ClawCV is WonderCV's AI career assistant skill for AI environments such as OpenC
 
 ### Step 1: Get an API key
 
-Get your `SKILL_BACKEND_API_KEY` from WonderCV. You will need it during installation and MCP configuration.
+Please go to [https://www.wondercv.com/clawcv](https://www.wondercv.com/clawcv) to obtain your ClawCV API Key.
 
-> The WonderCV account tier attached to the API key determines the available features and daily quotas.
+> The type of your WonderCV account associated with the API Key will determine the available features and daily quota.
+
 
 ### Step 2: Install
 
