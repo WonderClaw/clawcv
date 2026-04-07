@@ -2,7 +2,7 @@
 
 [简体中文](./README.md) | [English](./README_EN.md)
 
-> 把简历分析、改写、岗位匹配、PDF 导出和求职建议，直接带进你的 AI 对话里。
+> 把简历分析、改写、岗位匹配、校招匹配、PDF 导出和求职建议，直接带进你的 AI 对话里。
 
 [![Platform: OpenClaw](https://img.shields.io/badge/Platform-OpenClaw-orange.svg)](https://github.com/WonderClaw/clawcv)
 [![Platform: Claude_Code](https://img.shields.io/badge/Platform-Claude_Code-6b4fbb.svg)](https://anthropic.com/claude)
@@ -21,6 +21,7 @@ ClawCV 是 [超级简历 WonderCV](https://wondercv.com) 出品的 AI 求职 ski
 | **简历分析** | 5 维度评分（完整性/清晰度/匹配度/成果感/结构），输出问题优先级和改进建议 | “帮我看看这份简历” / “简历哪里有问题” |
 | **段落改写** | 改写个人总结、工作经历、项目经历、技能、教育经历，提供 1-3 个版本 | “优化我的工作经历” / “改写这段项目经历” |
 | **岗位匹配** | 对照 JD 输出匹配分、优势、差距、缺失关键词 | “看看我和这个岗位匹不匹配” |
+| **校招匹配** | 基于简历或求职意向/学历/专业，匹配近 30 天更新的校招岗位 | “帮我匹配校招” / “最近有哪些适合我的校招” |
 | **一页纸 PDF** | 整理并导出投递版 PDF，支持 4 种模板风格 | “导出 PDF” / “生成一页纸简历” |
 | **AI 导师** | 8 大模块：整体评价、修改建议、职位匹配、面试问题、求职规划、薪资谈判、多版本简历、人工导师 | “面试怎么准备” / “薪资怎么谈” |
 | **账号绑定** | 绑定 WonderCV 账号，升级会员解锁更多配额和完整功能 | “怎么升级” / “我要绑定账号” |
